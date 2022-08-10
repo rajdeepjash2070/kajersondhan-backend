@@ -18,7 +18,33 @@ app.use(express.json());
 
 
 
+const accountSid ="AC61a37e6ab348bc76e16ae44e81420176";
+const authToken ="5cb6564417e6f783105bad2eda951b5a";
+const client = require('twilio')(accountSid, authToken);
+const serviceID="VA3bcf1e661cc32a7d55e89ab4d39cc770";
+app.post('/send-verification-otp',(req,res)=>{
+const { mobileNumber }=req.body;
+client.verify.v2.services(serviceID)
+                .verifications
+                .create({to: '+91'+ mobileNumber, channel: 'sms'})
+                .then(verification => {
+                   return res.status(200).json({verification})
+                    }).catch(error=>{
+                       return res.status(400).json({error})
+                });
+            });
 
+app.post('/verify-otp',(req,res)=>{
+    const {mobileNumber,code}=req.body;
+    client.verify.v2.services(serviceID)
+      .verificationChecks
+      .create({to: '+91'+mobileNumber, code})
+      .then(verification_check =>{return res.status(200).json({verification_check})
+    }).catch(error=>{
+        return res.status(400).json({error})
+ });
+
+})
 const port = 8000;
 app.get("/",(req,res)=>{
 res.send("Hello from the server side of Kajer Sondhan")

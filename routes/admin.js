@@ -11,6 +11,7 @@ router.post("/", upload.single("image"), async (req, res) => {
     // Create new admin
     let admin = new Admin({
       name: req.body.name,
+      address:req.body.address,
       description:req.body.description,
       phnumber:req.body.phnumber,
       basis:req.body.basis,
@@ -18,6 +19,8 @@ router.post("/", upload.single("image"), async (req, res) => {
       compensation:req.body.compensation,
       avatar: result.secure_url,
       cloudinary_id: result.public_id,
+      longi:req.body.longi,
+      lati:req.body.lati,
     });
     // Save admin
     await admin.save();
@@ -62,6 +65,7 @@ router.put("/:id", upload.single("image"), async (req, res) => {
     }
     const data = {
       name: req.body.name || admin.name,
+      address:req.body.address || admin.address,
       description:req.body.name || admin.description,
       phnumber:req.body.name || admin.phnumber,
       basis:req.body.basis || admin.basis,
@@ -69,6 +73,8 @@ router.put("/:id", upload.single("image"), async (req, res) => {
       compensation:req.body.compensation || admin.compensation,
       avatar: result?.secure_url || admin.avatar,
       cloudinary_id: result?.public_id || admin.cloudinary_id,
+      longi:req.body.longi || admin.longi,
+      lati:req.body.lati || admin.lati,
     };
     admin = await admin.findByIdAndUpdate(req.params.id, data, { new: true });
     res.json(admin);
@@ -80,7 +86,7 @@ router.put("/:id", upload.single("image"), async (req, res) => {
 router.get("/:id", async (req, res) => {
   try {
     // Find admin by id
-    let admin = await admin.findById(req.params.id);
+    let admin = await Admin.findById(req.params.id);
     res.json(admin);
   } catch (err) {
     console.log(err);

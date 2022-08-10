@@ -6,7 +6,9 @@ const userSchema=new mongoose.Schema({
     avatar:{
         type:String,
     },
-    
+    address:{
+type:String,
+    },
     cloudinary_id:{
         type:String,
     },
@@ -25,6 +27,12 @@ const userSchema=new mongoose.Schema({
     compensation:{
         type:String,
     },
+    longi:{
+        type:String,
+    },
+    lati:{
+        type:String,
+    }
 });
 
 module.exports=mongoose.model("Admin",userSchema); 
